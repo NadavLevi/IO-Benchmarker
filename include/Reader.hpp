@@ -16,12 +16,14 @@ private:
 
 public:
     explicit Reader(uint64_t blockSize, uint8_t numOfJobs, bool isCaching);
-    void readWithRead(const std::string& fileName) const;      // read (Linux)
-    void readWithFread(const std::string& fileName) const;     // fread (Cross-Platform)
-    void readWithIfstream(const std::string& fileName) const;  // ifstream (Cross-Platform)
-    void readWithMmap(const std::string& fileName, bool shared);      // mmap (Cross-Platform)
+
+    void readWithRead(const std::string &fileName) const;           // read (Linux)
+    void readWithFread(const std::string &fileName) const;          // fread (Cross-Platform)
+    void readWithIfstream(const std::string &fileName) const;       // ifstream (Cross-Platform)
+    void readWithMmap(const std::string &fileName, bool shared) const;    // mmap (Cross-Platform)
 #ifndef __linux__
-    void readWithReadFile(const std::string& fileName);  // WinAPI (Windows)
+
+    void readWithReadFile(const std::string &fileName) const;             // WinAPI (Windows)
 #endif
 
 };

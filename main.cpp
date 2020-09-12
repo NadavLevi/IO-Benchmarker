@@ -1,8 +1,7 @@
 #include <Reader.hpp>
 #include <iostream>
 
-int main()
-{
+int main() {
     Reader reader(10, 1, false);
     reader.readWithIfstream("..\\Examples\\file2.txt");
     std::cout << "Finished" << std::endl;

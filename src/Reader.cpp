@@ -4,11 +4,14 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
+
 #ifndef __linux__
+
 #include <w32api/fileapi.h>
 #include <w32api/handleapi.h>
 
 #endif
+
 #include "../include/Reader.hpp"
 
 Reader::Reader(uint64_t blockSize, uint8_t numOfJobs, bool isCaching) : _blockSize(blockSize), _numOfJobs(numOfJobs),
@@ -52,7 +55,7 @@ void Reader::readWithIfstream(const std::string &fileName) const {
 
 }
 
-void Reader::readWithMmap(const std::string &fileName, bool shared) {
+void Reader::readWithMmap(const std::string &fileName, bool shared) const {
     void *mmaped = nullptr, *temp = nullptr;
     int fd = open(fileName.c_str(), O_RDONLY, 0);
     uint64_t fileSize = getFileSize(fileName);
@@ -89,15 +92,15 @@ void Reader::readWithMmap(const std::string &fileName, bool shared) {
 
 #ifndef __linux__
 
-void Reader::readWithReadFile(const std::string &fileName) {
-    HANDLE fp =  CreateFile((LPCSTR) fileName.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-    TCHAR *buffer = new TCHAR [this->_blockSize];
+void Reader::readWithReadFile(const std::string &fileName) const {
+    HANDLE fp = CreateFile((LPCSTR) fileName.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+                           nullptr);
+    TCHAR *buffer = new TCHAR[this->_blockSize];
     DWORD nRead = 0;
     uint64_t readBytes = 0;
     uint64_t fileSize = getFileSize(fileName);
-    while (readBytes < fileSize)
-    {
-        ReadFile(fp,buffer,this->_blockSize,&nRead,NULL);
+    while (readBytes < fileSize) {
+        ReadFile(fp, buffer, this->_blockSize, &nRead, nullptr);
         readBytes += nRead;
     }
     CloseHandle(fp);
